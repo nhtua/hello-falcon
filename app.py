@@ -1,5 +1,5 @@
 import falcon
-import json
+import falcon_jsonify
 from model import Session, Customer
 
 class CustomerCollectionResource(object):
@@ -14,8 +14,22 @@ class CustomerCollectionResource(object):
             name=row.name,
             dob =row.dob.strftime('%Y-%m-%d')
         ) for row in customers]
-        resp.content_type = falcon.MEDIA_JSON
-        resp.body = json.dumps(customers)
+        resp.json = customers
+        dbsession.close()
+
+    def on_post(self, req, resp):
+        new_customer = Customer(
+            name= req.get_json('name'),
+            dob = req.get_json('dob')
+        )
+        dbsession = Session()
+        dbsession.add(new_customer)
+        dbsession.commit()
+        resp.json = dict(
+            id  = new_customer.id,
+            name= new_customer.name,
+            dob = new_customer.dob.strftime('%Y-%d-%m')
+        )
         dbsession.close()
 
 
@@ -26,15 +40,16 @@ class CustomerSingleResource(object):
         customer = dbsession.query(Customer).filter(Customer.id == id).first()
         if customer is None:
             raise falcon.HTTPNotFound()
-        resp.content_type = falcon.MEDIA_JSON
-        resp.body = json.dumps(dict(
+        resp.json = dict(
             id  = customer.id,
             name= customer.name,
             dob = customer.dob.strftime('%Y-%m-%d')
-        ))
+        )
         dbsession.close()
 
 
-api = application = falcon.API()
+api = application = falcon.API(middleware=[
+    falcon_jsonify.Middleware(help_messages=True)
+])
 api.add_route('/customer', CustomerCollectionResource())
 api.add_route('/customer/{id:int}', CustomerSingleResource())

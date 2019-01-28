@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, TIMESTAMP, String, Date, JSON
 from model.database import Base
+from datetime import datetime
 
 
 class Customer(Base):
@@ -8,5 +9,5 @@ class Customer(Base):
     name       = Column(String(64))
     dob        = Column(Date)
     meta       = Column(JSON)
-    created_at = Column(TIMESTAMP)
+    created_at = Column(TIMESTAMP, default=datetime.utcnow())
     updated_at = Column(TIMESTAMP)

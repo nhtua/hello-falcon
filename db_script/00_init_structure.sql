@@ -7,7 +7,7 @@ CREATE TABLE "public"."customer" (
 	"dob" Date NOT NULL,
 	"meta" JSONB DEFAULT '{}'::jsonb NOT NULL,
 	"created_at" Timestamp With Time Zone NOT NULL,
-	"updated_at" Timestamp With Time Zone NOT NULL,
+	"updated_at" Timestamp With Time Zone DEFAULT now(),
 	PRIMARY KEY ( "id" ) );
  ;
 -- -------------------------------------------------------------
@@ -18,7 +18,8 @@ CREATE TABLE "public"."user" (
 	"username" Character Varying( 64 ) NOT NULL,
 	"password" Character Varying( 64 ) NOT NULL,
 	"created_at" Timestamp With Time Zone NOT NULL,
-	"updated_at" Timestamp With Time Zone DEFAULT now() NOT NULL );
+	"updated_at" Timestamp With Time Zone DEFAULT now(),
+	PRIMARY KEY ( "id" ) );
  ;
 -- -------------------------------------------------------------
 
