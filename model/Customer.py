@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, TIMESTAMP, String, Date, JSON
-from model.database import Base
+from model.BaseModel import BaseModel
 from datetime import datetime
 
 
-class Customer(Base):
+class Customer(BaseModel):
     __tablename__ = 'customer'
     id         = Column(Integer, primary_key=True, autoincrement=True)
     name       = Column(String(64))
