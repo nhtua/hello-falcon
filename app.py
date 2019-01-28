@@ -35,6 +35,7 @@ class CustomerCollectionResource(object):
 
 class CustomerSingleResource(object):
     """CustomerSingleResource class handles the enpoints for single customers"""
+
     def on_get(self, req, resp, id):
         dbsession = Session()
         customer = dbsession.query(Customer).filter(Customer.id == id).first()
@@ -46,6 +47,21 @@ class CustomerSingleResource(object):
             dob = customer.dob.strftime('%Y-%m-%d')
         )
         dbsession.close()
+
+    def on_put(self, req, resp, id):
+        dbsession = Session()
+        customer = dbsession.query(Customer).filter(Customer.id == id).first()
+        if customer is None:
+            raise falcon.HTTPNotFound()
+        customer.name = req.get_json('name')
+        customer.dob = req.get_json('dob')
+        if len(dbsession.dirty) > 0:
+            dbsession.commit()
+        resp.json = dict(
+            id  = customer.id,
+            name= customer.name,
+            dob = customer.dob.strftime('%Y-%d-%m')
+        )
 
 
 api = application = falcon.API(middleware=[
