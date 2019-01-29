@@ -24,7 +24,7 @@ class Auth(BaseResource):
             raise falcon.HTTPUnauthorized(title='Unauthorized', description='Authentication failed!!!')
         token = jwt.encode(dict(
             user_id=user.id,
-            exp=datetime.utcnow() + timedelta(seconds=30)
+            exp=datetime.utcnow() + timedelta(seconds=cfg('app', 'expired_after'))
         ), cfg('app', 'secret'), algorithm='HS256')
 
         resp.json = dict(
