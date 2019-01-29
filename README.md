@@ -17,7 +17,12 @@ docker build -t hello-falcon .
 
 3. Run the container:
 ```bash
-~
+docker run -d --rm --name hello-falcon \
+    -e APP_SECRET=your_secret_key_here \
+    -e APP_EXPIRED_AFTER=86400 \
+    -e DATABASE_CONNECTION_STRING=postgresql+psycopg2://postgres:tua123456789@172.22.0.2:5432/customer2 \
+    -p 8080:8080 \
+    --network=DB hello-falcon
 ```
 Explain the command above:
 - -d detach the STDOUT, running as daemon
