@@ -14,9 +14,8 @@ class AuthMiddleware(object):
                 return
 
         token = req.get_header('Authorization')
-        token = token.split(' ')[1]
 
-        challenges = ['Token type="Fernet"']
+        challenges = ['Token type="Bearer"']
 
         if token is None:
             description = ('Please provide an auth token '
@@ -25,6 +24,7 @@ class AuthMiddleware(object):
                                           description,
                                           challenges,
                                           href='https://auth0.com/docs/jwt')
+        token = token.split(' ')[1]
 
         if not self._is_token_valid(token):
             description = ('The provided auth token is not valid. '
