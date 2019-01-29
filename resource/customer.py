@@ -1,14 +1,15 @@
 import falcon
-from model import Session, Customer
+from model import Customer
 from hook import validator
 from form.customer import CustomerSchema
+from resource import BaseResource
 
 
-class CustomerCollectionResource(object):
+class CustomerCollectionResource(BaseResource):
     """CustomerCollectionResource class handles the endpoints for listing customers"""
 
     def on_get(self, req, resp):
-        dbsession = Session()
+        dbsession = self.db.session
         customers = dbsession.query(Customer)\
             .order_by(Customer.id.desc())\
             .all()
@@ -27,7 +28,7 @@ class CustomerCollectionResource(object):
             name=req.get_json('name'),
             dob=req.get_json('dob')
         )
-        dbsession = Session()
+        dbsession = self.db.session
         dbsession.add(new_customer)
         dbsession.commit()
         resp.status = falcon.HTTP_201
@@ -39,11 +40,11 @@ class CustomerCollectionResource(object):
         dbsession.close()
 
 
-class CustomerSingleResource(object):
+class CustomerSingleResource(BaseResource):
     """CustomerSingleResource class handles the enpoints for single customers"""
 
     def on_get(self, req, resp, id):
-        dbsession = Session()
+        dbsession = self.db.session
         customer = dbsession.query(Customer).filter(Customer.id == id).first()
         if customer is None:
             raise falcon.HTTPNotFound()
@@ -56,7 +57,7 @@ class CustomerSingleResource(object):
 
     @falcon.before(validator, CustomerSchema(strict=True))
     def on_put(self, req, resp, id):
-        dbsession = Session()
+        dbsession = self.db.session
         customer = dbsession.query(Customer).filter(Customer.id == id).first()
         if customer is None:
             raise falcon.HTTPNotFound()
@@ -69,12 +70,14 @@ class CustomerSingleResource(object):
             name=customer.name,
             dob=customer.dob.strftime('%Y-%d-%m')
         )
+        dbsession.close()
 
 
     def on_delete(self, req, resq, id):
-        dbsession = Session()
+        dbsession = self.db.session
         customer = dbsession.query(Customer).filter(Customer.id == id).first()
         if customer is None:
             raise falcon.HTTPNotFound()
         dbsession.delete(customer)
         dbsession.commit()
+        dbsession.close()

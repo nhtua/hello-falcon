@@ -1,10 +1,10 @@
-from model.database import Base, Session
+from model.BaseModel import BaseModel
 from model.User import User
 from model.Customer import Customer
 
+
 __all__ = [
-    Base,
-    Session,
+    BaseModel,
     User,
     Customer
 ]
