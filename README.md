@@ -46,13 +46,13 @@ docker logs hello-falcon
 ```
 
 5. Create user for API login:
-You can defined default user as above ENV or create others by the command: 
+You can defined default user as these above ENV or create others by the command: 
 ```bash
 docker exec -it hello-falcon /bin/sh
 python adduser.py --user=User --password=Secret
 ```
 
-5. Stop the container:
+6. Stop the container:
 ```bash
 docker stop hello-falcon
 ```
