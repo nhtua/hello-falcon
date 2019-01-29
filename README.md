@@ -21,6 +21,8 @@ docker run -d --rm --name hello-falcon \
     -e APP_SECRET=your_secret_key_here \
     -e APP_EXPIRED_AFTER=86400 \
     -e DATABASE_CONNECTION_STRING=postgresql+psycopg2://postgres:tua123456789@172.22.0.2:5432/customer2 \
+    -e API_USERNAME=admin \
+    -e API_PASSWORD=123456 \
     -p 8080:8080 \
     --network=DB hello-falcon
 ```
@@ -34,11 +36,20 @@ Explain the command above:
 - -p mapping port from host to container
 - --name name of the container 
 - --network <network name> Use when you want the container join the docker network   
+- API_USERNAME set the username to login
+- API_PASSWORD set the password to login
 After container `hello-falcon` run, you can explore the API.
 
 4. View container output (log)
 ```bash
 docker logs hello-falcon
+```
+
+5. Create user for API login:
+You can defined default user as above ENV or create others by the command: 
+```bash
+docker exec -it hello-falcon /bin/sh
+python adduser.py --user=User --password=Secret
 ```
 
 5. Stop the container:
@@ -60,6 +71,8 @@ pip install -r requirements.txt
 3. Run the app:
 ```bash
 gunicorn --bind=127.0.0.1:8080 --reload app:api
+#or add user
+python adduser.py --user=User --password=Secret
 ```
 --reload helps gunicorn auto reload when files change.
 
