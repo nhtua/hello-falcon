@@ -23,9 +23,9 @@ Explain the command above:
 - -d detach the STDOUT, running as daemon
 - --rm delete the container after shutdown
 - -e set ENV variables:
-    + APP_SECRET=your_secret_key_here 
-    + APP_EXPIRED_AFTER=86400 Token is expired after seconds
-    + DATABASE_CONNECTION_STRING= The string to connect database
+    + APP_SECRET=your_secret_key_here, the secret key for HS256 algorithm in JWT 
+    + APP_EXPIRED_AFTER=86400, token is expired after 86400 seconds
+    + DATABASE_CONNECTION_STRING="", the string to connect database
 - -p mapping port from host to container
 - --name name of the container 
 - --network <network name> Use when you want the container join the docker network   
