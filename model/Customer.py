@@ -10,4 +10,4 @@ class Customer(BaseModel):
     dob        = Column(Date)
     meta       = Column(JSON)
     created_at = Column(TIMESTAMP, default=datetime.utcnow())
-    updated_at = Column(TIMESTAMP)
+    updated_at = Column(TIMESTAMP, nullable=True)

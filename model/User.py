@@ -9,4 +9,4 @@ class User(BaseModel):
     username = Column(String(64))
     password = Column(String(64))
     created_at = Column(TIMESTAMP, default=datetime.utcnow())
-    updated_at = Column(TIMESTAMP)
+    updated_at = Column(TIMESTAMP, nullable=True)
