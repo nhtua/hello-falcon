@@ -7,7 +7,7 @@ configParser.read(configFilePath)
 
 
 def cfg(section, key, casting=str):
-    var_env = str(section+key).upper()
+    var_env = str(section+"_"+key).upper()
 
     if var_env in os.environ:
         return os.environ[var_env]
