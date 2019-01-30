@@ -1,6 +1,6 @@
 # Hello Falcon
 
-This document will guid you how to run this app.
+This document will guide you how to run this app.
 
 ## Build docker image
 Because I didn't setup a private SSL Docker registry, so you must to build the docker image by yourself.
