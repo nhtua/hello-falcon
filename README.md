@@ -76,6 +76,13 @@ python adduser.py --user=User --password=Secret
 ```
 --reload helps gunicorn auto reload when files change.
 
+4. Switch database connection for testing
+Just place the env var: `DATABASE_CONNECTION_STRING` before run the command.
+```bash
+DATABASE_CONNECTION_STRING=postgresql+psycopg2://postgres:tua123456789@172.22.0.2:5432/customer2
+```
+
+
 ## Explore API via Postman
 
 1. Import [collection here](https://www.getpostman.com/collections/ec73f671bb847e6f2d75)
